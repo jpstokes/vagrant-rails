@@ -13,20 +13,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Install linux packages
   #
-  config.vm.provision :shell, path: "https://github.com/orendon/vagrant-rails/raw/master/script/vagrant_bootstrap.sh", privileged: false
+  config.vm.provision :shell, path: "script/vagrant_bootstrap.sh", privileged: false
 
   # Uncomment this line if you want to bundle install and setup/create database (optional)
   # The path: option accepts a script on your local filesystem in case you want to provide your own
   #
-  # config.vm.provision :shell, path: "https://github.com/orendon/vagrant-rails/raw/master/script/app_specifics.sh", privileged: false
+  # config.vm.provision :shell, path: "script/app_specifics.sh", privileged: false
 
   # Use an specific IP address on your local network
   #
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.33.10"
 
   # Share additional folders to the guest VM
   #
-  # config.vm.synced_folder "../folder_on_your_host_machine", "/folder_on_vagrant_vm"
+  config.vm.synced_folder '.', '/vagrant', nfs: true
 
   # Provider-specific configuration so you can fine-tune various
   # Example for VirtualBox:
@@ -35,7 +35,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   # Don't boot with headless mode
   #   vb.gui = true
   #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+  #Vm comfig
+  config.vm.provider "virtualbox" do |v|
+    host = RbConfig::CONFIG['host_os']
+
+    # Give VM 1/4 system memory & access to all cpu cores on the host
+    if host =~ /darwin/
+      cpus = `sysctl -n hw.ncpu`.to_i
+      # sysctl returns Bytes and we need to convert to MB
+      mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+    elsif host =~ /linux/
+      cpus = `nproc`.to_i
+      # meminfo shows KB and we need to convert to MB
+      mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+    else # sorry Windows folks, I can't help you
+      cpus = 2
+      mem = 1024
+    end
+
+    v.customize ["modifyvm", :id, "--memory", mem]
+    v.customize ["modifyvm", :id, "--cpus", cpus]
+  end
+
 end
