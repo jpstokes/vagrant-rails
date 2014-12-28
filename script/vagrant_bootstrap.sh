@@ -21,13 +21,21 @@ sudo apt-get install -y libqtwebkit-dev xvfb
 sudo apt-get install -y imagemagick libmagickwand-dev
 
 # Postgres
-sudo apt-get install -y postgresql-9.3 postgresql-server-dev-9.3 postgresql-contrib-9.3
+sudo apt-get install -y postgresql-9.4 postgresql-server-dev-9.4 postgresql-contrib-9.4
+sudo sudo -u postgres psql -1 -c "CREATE USER postgres WITH PASSWORD 'postgres';"
+sudo sudo -u postgres psql -1 -c "ALTER USER postgres WITH SUPERUSER;"
+
+# MySQL
+debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+sudo apt-get -y install mysql-server libmysqlclient-dev
 
 # Memcached
 sudo apt-get install -y memcached
 
-# Redis
+# Redisпше
 sudo apt-get install -y redis-server
+
 
 # setup rbenv and ruby-build
 git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -35,12 +43,12 @@ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 
-# Install ruby 2.1.4 and bundler
+# Install ruby 2.2.0 and bundler
 export RBENV_ROOT="${HOME}/.rbenv"
 export PATH="${RBENV_ROOT}/bin:${PATH}"
 export PATH="${RBENV_ROOT}/shims:${PATH}"
-rbenv install 2.1.4
-rbenv global 2.1.4
+rbenv install 2.2.0
+rbenv global 2.2.0
 gem install bundler
 rbenv rehash
 
