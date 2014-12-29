@@ -20,21 +20,28 @@ sudo apt-get install -y libqtwebkit-dev xvfb
 # ImageMagick and Rmagick
 sudo apt-get install -y imagemagick libmagickwand-dev
 
-# Postgres
-sudo apt-get install -y postgresql-9.4 postgresql-server-dev-9.4 postgresql-contrib-9.4
-sudo sudo -u postgres psql -1 -c "CREATE USER postgres WITH PASSWORD 'postgres';"
-sudo sudo -u postgres psql -1 -c "ALTER USER postgres WITH SUPERUSER;"
-
-# MySQL
-debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
-debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
-sudo apt-get -y install mysql-server libmysqlclient-dev
+# # MySQL
+# debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+# debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+# sudo apt-get -y install mysql-server libmysqlclient-dev
 
 # Memcached
 sudo apt-get install -y memcached
 
 # Redisпше
 sudo apt-get install -y redis-server
+
+# Postgres
+# deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+sudo apt-get install wget ca-certificates
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get -y update
+# sudo apt-get -y upgrade
+sudo apt-get install -y postgresql-9.4 postgresql-server-dev-9.4 postgresql-contrib-9.4
+sudo sudo -u postgres psql -1 -c "CREATE USER postgres WITH PASSWORD 'postgres';"
+sudo sudo -u postgres psql -1 -c "ALTER USER postgres WITH SUPERUSER;"
+
 
 
 # setup rbenv and ruby-build
@@ -47,8 +54,8 @@ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-bu
 export RBENV_ROOT="${HOME}/.rbenv"
 export PATH="${RBENV_ROOT}/bin:${PATH}"
 export PATH="${RBENV_ROOT}/shims:${PATH}"
-rbenv install 2.2.0
-rbenv global 2.2.0
+rbenv install 2.1.4
+rbenv global 2.1.4
 gem install bundler
 rbenv rehash
 
