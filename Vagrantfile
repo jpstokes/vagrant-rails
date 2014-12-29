@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Install linux packages
   #
-  config.vm.provision :shell, path: "script/vagrant_bootstrap.sh", privileged: false
+  config.vm.provision :shell, path: "vagrant/vagrant_bootstrap.sh", privileged: false
 
   # Uncomment this line if you want to bundle install and setup/create database (optional)
   # The path: option accepts a script on your local filesystem in case you want to provide your own
