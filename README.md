@@ -51,13 +51,13 @@ This box (with shell provisioner) start with a basic Ubuntu 14.04 (trusty) based
 
 If you want connect to pg from your host machine.
 Add to **/etc/postgresql/9.4/main/postgresql.conf** :
-
+```shell
 listen_addresses = '*'
-
+```
 Add to **/etc/postgresql/9.4/main/pg_hba.conf** :
-
+```shell
 host all all 192.168.33.10/32 md5
-
+```
 You can use [pgadmin](http://www.pgadmin.org).
 
 
