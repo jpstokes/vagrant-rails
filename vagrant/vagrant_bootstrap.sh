@@ -37,11 +37,6 @@ sudo apt-get install wget ca-certificates
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get -y update
 
-#Postgres configuration
-
-sudo echo -e "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
-echo -e "host    all             all             127.0.0.1/32            md5" >> sudo  /etc/postgresql/9.4/main/pg_hba.conf
-
 sudo apt-get install -y postgresql-9.4 postgresql-server-dev-9.4 postgresql-contrib-9.4
 sudo sudo -u postgres psql -1 -c "CREATE USER vagrant WITH PASSWORD 'vagrant';"
 sudo sudo -u postgres psql -1 -c "ALTER USER vagrant WITH SUPERUSER;"
@@ -60,6 +55,18 @@ rbenv install 2.1.4
 rbenv global 2.1.4
 gem install bundler
 rbenv rehash
+
+sudo apt-add-repository -y ppa:fish-shell/release-2
+sudo apt-get update
+sudo apt-get -y install fish
+curl -L https://github.com/bpinto/oh-my-fish/raw/master/tools/install.fish | fish
+
+sudo apt-get -y install tmux
+sudo apt-get -y install mc
+
+git clone https://github.com/braintreeps/vim_dotfiles.git
+cd vim_dotfiles
+rake activate
 
 # cleanup
 sudo apt-get clean
