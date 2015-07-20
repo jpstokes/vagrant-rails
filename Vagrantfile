@@ -5,7 +5,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu_precise64"
   # Forward rails server port to your host machine
   #
   config.vm.network "forwarded_port", guest: 3000, host: 3000
